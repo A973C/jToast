@@ -9,6 +9,6 @@ https://www.leom2g.pw/jToast/
 showToast(title, border_radius)
 ```
 
-```
+```javascript
 e.x showToast("test", "25px") or showToast("test")
 ```
