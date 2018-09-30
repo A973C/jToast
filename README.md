@@ -5,8 +5,10 @@ A very simple jQuery Plugin to create Toasts
 https://www.leom2g.pw/jToast/
 
 # Usage:
-    ```
-    showToast(title, border_radius)
+```javascript
+showToast(title, border_radius)
+```
 
-    e.x showToast("test", "25px") or showToast("test")
-    ```
+```
+e.x showToast("test", "25px") or showToast("test")
+```
