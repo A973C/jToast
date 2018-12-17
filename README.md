@@ -1,8 +1,8 @@
 # jToast
-A very simple jQuery Plugin to create Toasts
+A very simple to use jQuery Plugin to create Toasts.
 
 # Demo:
-https://www.leom2g.pw/jToast/
+https://l2g.cc/jToast
 
 # Usage:
 ```javascript
