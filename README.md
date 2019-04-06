@@ -1,10 +1,10 @@
 # jToast
 A very simple to use jQuery Plugin to create Toasts.
 
-# Demo:
-https://l2g.cc/jToast
+## Demo:
+https://l2g.cc/projects/jToast/
 
-# Usage:
+## Usage:
 ```javascript
 showToast(title, border_radius, time_to_show)
 ```
