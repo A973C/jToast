@@ -8,9 +8,8 @@ https://l2g.cc/projects/jToast/
 ```javascript
 showToast(title, border_radius, time_to_show)
 ```
-
+### Examples
 ```javascript
-Examples:
 showToast("Just a test", "25px", 3);
 // Creates a toast with a 25px border radius that will be visible for 3 seconds.
 
