@@ -4,11 +4,11 @@ let id = 0;
 $("head").append(`<style>
     .toast { background: #222; padding: 15px; color: #fff; position: fixed; right: -100%; top: 5%; z-index: 1000000; }
     @keyframes show {
-        from { right: -100% } to { right: 5% }
+        from { right: -100% } to { right: 50px }
     }
     .show { animation: show 500ms; animation-fill-mode: forwards; }
     @keyframes hide {
-        from { right: 5% } to { right: -100% }
+        from { right: 50px } to { right: -100% }
     }
     .hide { animation: hide 500ms; animation-fill-mode: forwards; }
 </style>`);
@@ -20,6 +20,13 @@ const showToast = (text, border_radius, time) => {
 
     setTimeout((hide_id) => {
         $(`#toast_${hide_id}`).addClass("hide");
+
+        for (let i = 0; i < $(".toast").length; i++) {
+            $(".toast").eq(i).animate({
+                "margin-top": ($(".toast").eq(i).attr("style").split("margin-top: ")[1].split(";")[0].replace("px", "") - 60) + "px"
+            }, 500);
+        }
+
         count--;
     }, time * 1000, id);
 
