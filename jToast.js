@@ -21,11 +21,11 @@ const showToast = (text, border_radius, time) => {
     setTimeout((hide_id) => {
         $(`#toast_${hide_id}`).addClass("hide");
 
-        for (let i = 0; i < $(".toast").length; i++) {
+        $(".toast").map((i) => {
             $(".toast").eq(i).animate({
                 "margin-top": ($(".toast").eq(i).attr("style").split("margin-top: ")[1].split(";")[0].replace("px", "") - 60) + "px"
             }, 500);
-        }
+        });
 
         count--;
     }, time * 1000, id);
