@@ -17,7 +17,7 @@ showToast(text, {
   duration: 3000,
   background: '#232323',
   color: '#fff',
-  borderRadius: '0'
+  borderRadius: '0px'
 });
 ```
 
