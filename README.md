@@ -25,7 +25,7 @@ showToast(text, {
 ```javascript
 showToast('WHAT'S UP?!', {
   duration: 5000,
-  background: '#0769ad',
+  background: '#20b2aa',
   color: '#f1f1f1',
   borderRadius: 15
 });
