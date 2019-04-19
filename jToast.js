@@ -4,7 +4,7 @@ function showToast(text, args = {}) {
     args.duration = args.duration || 3000;
     args.background = args.background || "#232323";
     args.color = args.color || "#fff";
-    args.borderRadius = args.borderRadius || 0;
+    args.borderRadius = args.borderRadius || "0px";
 
     $("body").append(`
         <div style="background: ${args.background}; color: ${args.color}; border-radius: ${args.borderRadius};" data-toast-id="${toasts}" class="toast">
