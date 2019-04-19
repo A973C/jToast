@@ -1,6 +1,34 @@
 let toasts = 0;
+let manager = {
+    ready: true,
+    jobs: [],
+    currentWorkingID: 0,
+    interval: null,
+    addJob(job) {
+        this.ready = false;
+        this.jobs.push({ text: job.text, args: job.args });
+    },
+    removeJob(id) {
+        if (this.currentWorkingID === id) {
+            this.ready = true;
+        }
+    },
+    workJobsOff() {
+        if (this.ready && this.jobs.length > 0) {
+            showToast(this.jobs[0].text, this.jobs[0].args);
+            this.jobs.splice(0, 1);
+        }
+    }
+};
 
 function showToast(text, args = {}) {
+    const selectedToast = toasts;
+    if (!manager.ready) {
+        manager.addJob({text: text, args: args, workingID: selectedToast});
+        return;
+    }
+    manager.currentWorkingID = selectedToast;
+
     args.duration = args.duration || 3000;
     args.background = args.background || "#232323";
     args.color = args.color || "#fff";
@@ -12,16 +40,24 @@ function showToast(text, args = {}) {
         </div>
     `);
 
-    let selectedToast = toasts;
     $(".toast").map((i) => {
+        manager.ready = false;
         if (i !== selectedToast) {
             $(".toast").eq(i).animate({
                 "margin-top": "+=" + parseInt($(`[data-toast-id="${selectedToast}"]`).height() + (15 * 2) + 15 + 5) + "px"
+            }, 300);
+
+            setTimeout(() => {
+                manager.removeJob(selectedToast);
             }, 300);
         }else {
             setTimeout(() => {
                 $(".toast").eq(i).animate({
                     "margin-top": "25px"
+                }, 300);
+
+                setTimeout(() => {
+                    manager.removeJob(selectedToast);
                 }, 300);
             }, 150);
         }
@@ -66,5 +102,9 @@ function showToast(text, args = {}) {
                 max-width: 50%;
             }
         </style>
-    `)
+    `);
+
+    setInterval(() => {
+        manager.workJobsOff();
+    }, 250);
 })();
