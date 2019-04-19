@@ -16,7 +16,7 @@ function showToast(text, args = {}) {
     $(".toast").map((i) => {
         if (i !== selectedToast) {
             $(".toast").eq(i).animate({
-                "margin-top": "+=" + parseInt($(`[data-toast-id="${selectedToast}"]`).height() + (15 * 2) + 15 + 10) + "px"
+                "margin-top": "+=" + parseInt($(`[data-toast-id="${selectedToast}"]`).height() + (15 * 2) + 15 + 5) + "px"
             }, 300);
         }else {
             setTimeout(() => {
