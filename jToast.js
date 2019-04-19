@@ -1,35 +1,58 @@
-let count = 0;
-let id = 0;
+let toasts = 0;
 
-$("head").append(`<style>
-    .toast { background: #222; padding: 15px; color: #fff; position: fixed; right: -100%; top: 5%; z-index: 1000000; }
-    @keyframes show {
-        from { right: -100% } to { right: 50px }
-    }
-    .show { animation: show 500ms; animation-fill-mode: forwards; }
-    @keyframes hide {
-        from { right: 50px } to { right: -100% }
-    }
-    .hide { animation: hide 500ms; animation-fill-mode: forwards; }
-</style>`);
+function showToast(text, args = {}) {
+    args.duration = args.duration || 3000;
+    args.background = args.background || "#232323";
+    args.color = args.color || "#fff";
+    args.borderRadius = args.borderRadius || 0;
 
-const showToast = (text, border_radius, time) => {
-    $("body").append(`<div id="toast_${id}" class="toast" style="margin-top: ${count*60}px; border-radius: ${border_radius};">${text}</div>`);
+    $("body").append(`
+        <div style="background: ${args.background}; color: ${args.color}; border-radius: ${args.borderRadius}" data-toast-id="${toasts}" class="toast">
+            ${text}
+        </div>
+    `);
 
-    $(`#toast_${id}`).addClass("show");
-
-    setTimeout((hide_id) => {
-        $(`#toast_${hide_id}`).addClass("hide");
-
-        $(".toast").map((i) => {
+    let selectedToast = toasts;
+    $(".toast").map((i) => {
+        if (i !== selectedToast) {
             $(".toast").eq(i).animate({
-                "margin-top": ($(".toast").eq(i).attr("style").split("margin-top: ")[1].split(";")[0].replace("px", "") - 60) + "px"
-            }, 500);
-        });
+                "margin-top": "+=" + parseInt($(`[data-toast-id="${selectedToast}"]`).height() + (15 * 2) + 15 + 10) + "px"
+            }, 300);
+        }else {
+            setTimeout(() => {
+                $(".toast").eq(i).animate({
+                    "margin-top": "25px"
+                }, 300);
+            }, 150);
+        }
+    });
 
-        count--;
-    }, time * 1000, id);
+    setTimeout(() => {
+        $(`[data-toast-id="${selectedToast}"]`).animate({
+            "margin-right": "-" + parseInt($(`[data-toast-id="${selectedToast}"]`).width() + (15 * 2) + 38) + "px"
+        }, 300);
 
-    count++;
-    id++;
-};
+        setTimeout(() => {
+            $(`[data-toast-id="${selectedToast}"]`).css("display", "none");
+        }, 300);
+    }, args.duration);
+
+    toasts++;
+}
+
+(() => {
+    $("head").append(`
+        <style>
+            .toast {
+                padding: 15px;
+                color: #fff;
+                position: fixed;
+                right: 25px;
+                top: 0;
+                margin-top: -100px;
+                box-shadow: 0 10px 40px 0 rgba(62,57,107,.07), 0 2px 9px 0 rgba(62,57,107,.12);
+                max-width: 50%;
+            }
+        </style>
+    `)
+})();
