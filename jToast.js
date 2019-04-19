@@ -84,7 +84,6 @@ function showToast(text, args = {}) {
             $(`[data-toast-id="${selectedToast}"]`).css("display", "none");
         }, 300);
     }, args.duration);
-
     toasts++;
 }
 
