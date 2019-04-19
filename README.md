@@ -29,3 +29,4 @@ showToast('Thanks for signing up!', {
   color: '#f1f1f1',
   borderRadius: '15px'
 });
+
