@@ -23,7 +23,7 @@ showToast(text, {
 
 ## An example
 ```javascript
-showToast(`Thanks for signing up!`, {
+showToast('Thanks for signing up!', {
   duration: 5000,
   background: '#20b2aa',
   color: '#f1f1f1',
