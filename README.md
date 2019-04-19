@@ -17,7 +17,7 @@ showToast(text, {
   duration: 3000,
   background: '#232323',
   color: '#fff',
-  borderRadius: 0
+  borderRadius: '0'
 });
 ```
 
@@ -27,5 +27,5 @@ showToast('Thanks for signing up!', {
   duration: 5000,
   background: '#20b2aa',
   color: '#f1f1f1',
-  borderRadius: 15
+  borderRadius: '15px'
 });
