@@ -32,6 +32,18 @@ function showToast(text, args = {}) {
             "margin-right": "-" + parseInt($(`[data-toast-id="${selectedToast}"]`).width() + (15 * 2) + 38) + "px"
         }, 300);
 
+        if (selectedToast !== toasts) {
+            $(".toast").map((i) => {
+                if (i < selectedToast) {
+                    setTimeout(() => {
+                        $(".toast").eq(i).animate({
+                            "margin-top": "-=" + parseInt($(`[data-toast-id="${selectedToast}"]`).height() + (15 * 2) + 15 + 5) + "px"
+                        }, 300);
+                    }, 300);
+                }
+            });
+        }
+
         setTimeout(() => {
             $(`[data-toast-id="${selectedToast}"]`).css("display", "none");
         }, 300);
