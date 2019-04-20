@@ -87,6 +87,31 @@ function showToast(text, { duration = 3000, background = "#232323", color = "#ff
     }, duration);
 
     toasts++;
+    return selectedToast;
+}
+
+function hideToast(id) {
+    if ($(`[data-toast-id="${id}"]`).css("display") !== "none") {
+        $(`[data-toast-id="${id}"]`).animate({
+            "margin-right": "-" + parseInt($(`[data-toast-id="${id}"]`).width() + (15 * 2) + 25) + "px"
+        }, 300);
+
+        if (id !== toasts) {
+            $(".toast").map((i) => {
+                if (i < id) {
+                    setTimeout(() => {
+                        $(".toast").eq(i).animate({
+                            "margin-top": "-=" + parseInt($(`[data-toast-id="${id}"]`).height() + (15 * 2) + 15 + 5) + "px"
+                        }, 300);
+                    }, 300);
+                }
+            });
+        }
+
+        setTimeout(() => {
+            $(`[data-toast-id="${id}"]`).css("display", "none");
+        }, 300);
+    }
 }
 
 (() => {
