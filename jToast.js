@@ -3,39 +3,40 @@ let manager = {
     ready: true,
     jobs: [],
     currentWorkingID: 0,
-    interval: null,
     addJob(job) {
         this.ready = false;
         this.jobs.push({ text: job.text, args: job.args });
+
+        const waitUntilReady = setInterval(() => {
+            if (this.workJobOff()) {
+                clearInterval(waitUntilReady);
+            }
+        }, 250);
     },
     removeJob(id) {
         if (this.currentWorkingID === id) {
             this.ready = true;
         }
     },
-    workJobsOff() {
+    workJobOff() {
         if (this.ready && this.jobs.length > 0) {
             showToast(this.jobs[0].text, this.jobs[0].args);
             this.jobs.splice(0, 1);
+            return true;
         }
     }
 };
 
-function showToast(text, args = {}) {
+function showToast(text, { duration = 3000, background = "#232323", color = "#fff", borderRadius = "0px" } = {}) {
     const selectedToast = toasts;
     if (!manager.ready) {
-        manager.addJob({text: text, args: args, workingID: selectedToast});
+        manager.addJob({ text: text, args: showToast.arguments[1], workingID: selectedToast });
         return;
     }
     manager.currentWorkingID = selectedToast;
 
-    args.duration = args.duration || 3000;
-    args.background = args.background || "#232323";
-    args.color = args.color || "#fff";
-    args.borderRadius = args.borderRadius || "0px";
-
     $("body").append(`
-        <div style="background: ${args.background}; color: ${args.color}; border-radius: ${args.borderRadius};" data-toast-id="${toasts}" class="toast">
+        <div style="background: ${background}; color: ${color}; border-radius: ${borderRadius};" data-toast-id="${toasts}" class="toast">
             ${text}
         </div>
     `);
@@ -65,7 +66,7 @@ function showToast(text, args = {}) {
 
     setTimeout(() => {
         $(`[data-toast-id="${selectedToast}"]`).animate({
-            "margin-right": "-" + parseInt($(`[data-toast-id="${selectedToast}"]`).width() + (15 * 2) + 38) + "px"
+            "margin-right": "-" + parseInt($(`[data-toast-id="${selectedToast}"]`).width() + (15 * 2) + 25) + "px"
         }, 300);
 
         if (selectedToast !== toasts) {
@@ -83,7 +84,8 @@ function showToast(text, args = {}) {
         setTimeout(() => {
             $(`[data-toast-id="${selectedToast}"]`).css("display", "none");
         }, 300);
-    }, args.duration);
+    }, duration);
+
     toasts++;
 }
 
@@ -102,8 +104,4 @@ function showToast(text, args = {}) {
             }
         </style>
     `);
-
-    setInterval(() => {
-        manager.workJobsOff();
-    }, 250);
 })();
