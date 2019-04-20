@@ -26,6 +26,10 @@ showToast(text, {
   borderRadius: '0px'
 });
 ```
+
+```javascript
+hideToast(toastID); // toastID gets returned from the showToast function
+```
 <br>
 
 ## An example
