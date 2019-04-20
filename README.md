@@ -1,10 +1,9 @@
-![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)
+![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)<br>
+![shields.io](https://img.shields.io/github/stars/l2ig/jToast.svg?style=for-the-badge)
+![shields.io](https://img.shields.io/github/languages/top/l2ig/jToast.svg?style=for-the-badge)
 
 # jToast
-A modern & easy-going jQuery Plugin to create Toasts.<br>
-
-![](https://img.shields.io/github/languages/top/l2ig/jToast.svg)
-![t](https://img.shields.io/github/stars/l2ig/jToast.svg?style=social)<br><br>
+A modern & easy-going jQuery Plugin to create Toasts.<br><br>
 
 ## Demo
 [Click](https://l2g.cc/projects/jToast/)
