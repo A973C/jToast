@@ -26,7 +26,6 @@ showToast(text, {
 showToast('Thanks for signing up!', {
   duration: 5000,
   background: '#20b2aa',
-  color: '#f1f1f1',
   borderRadius: '15px'
 });
 
