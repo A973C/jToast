@@ -1,8 +1,14 @@
+![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)
+
 # jToast
-A modern & easy-going jQuery Plugin to create Toasts.
+A modern & easy-going jQuery Plugin to create Toasts.<br>
+
+![](https://img.shields.io/github/languages/top/l2ig/jToast.svg)
+![t](https://img.shields.io/github/stars/l2ig/jToast.svg?style=social)<br><br>
 
 ## Demo
 [Click](https://l2g.cc/projects/jToast/)
+<br>
 
 ## Customization options
 * Text
@@ -10,6 +16,7 @@ A modern & easy-going jQuery Plugin to create Toasts.
 * Background
 * Color
 * Border radius
+<br>
 
 ## Usage & default values
 ```javascript
@@ -20,6 +27,7 @@ showToast(text, {
   borderRadius: '0px'
 });
 ```
+<br>
 
 ## An example
 ```javascript
