@@ -7,7 +7,7 @@ A modern & easy-going jQuery Plugin to create Toasts.<br><br>
 
 ## Demo
 [Click](https://l2g.cc/projects/jToast/)
-<br>
+<br><br>
 
 ## Customization options
 * Text
