@@ -27,7 +27,7 @@ let manager = {
     }
 };
 
-function showToast(text, { duration = 3000, background = "#232323", color = "#fff", borderRadius = "0px" } = {}) {
+function showToast(text, { duration = 3000, background = "#232323", color = "#fff", borderRadius = "0px", close = false } = {}) {
     const selectedToast = toasts;
     if (!manager.ready) {
         manager.addJob({ text: text, args: showToast.arguments[1], workingID: selectedToast });
@@ -36,10 +36,15 @@ function showToast(text, { duration = 3000, background = "#232323", color = "#ff
     manager.currentWorkingID = selectedToast;
 
     $("body").append(`
-        <div style="background: ${background}; color: ${color}; border-radius: ${borderRadius};" data-toast-id="${toasts}" class="toast">
-            ${text}
+        <div style="background: ${background}; color: ${color}; border-radius: ${borderRadius}; ${close ? 'display: flex;' : ''}" data-toast-id="${toasts}" class="toast">
+            <span>${text}</span>
         </div>
     `);
+
+    if (close)
+        $(`[data-toast-id="${selectedToast}"]`).append(`
+            <div style="height: ${$(`[data-toast-id="${selectedToast}"] > span`).height()}px" onclick="hideToast(${selectedToast})" class="close">&times;</div>
+        `);
 
     $(".toast").map((i) => {
         manager.ready = false;
@@ -126,6 +131,15 @@ function hideToast(id) {
                 margin-top: -100px;
                 box-shadow: 0 10px 40px 0 rgba(62,57,107,.07), 0 2px 9px 0 rgba(62,57,107,.12);
                 max-width: 50%;
+            }
+            
+            .toast > .close {
+                margin-left: 15px;
+                opacity: 0.75;
+                font-size: 24px;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
             }
         </style>
     `);
