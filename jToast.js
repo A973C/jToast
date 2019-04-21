@@ -28,7 +28,7 @@ let manager = {
     }
 };
 
-function showToast(text, { duration = 3000, background = "#232323", color = "#fff", borderRadius = "0px", close = false } = {}) {
+function showToast(text, { duration = 3000, background = "#232323", color = "#fff", borderRadius = "0px", close = false, progressBar = false } = {}) {
     const selectedToast = toasts;
     if (!manager.ready) {
         manager.addJob({ text: text, args: showToast.arguments[1], workingID: selectedToast, type: "show" });
@@ -39,6 +39,8 @@ function showToast(text, { duration = 3000, background = "#232323", color = "#ff
     $("#toasts").append(`
         <div style="background: ${background}; color: ${color}; border-radius: ${borderRadius}; ${close ? 'display: flex;' : ''}" data-toast-id="${toasts}" class="toast">
             <span>${text}</span>
+            
+            ${progressBar ? `<div style="animation-duration: ${duration}ms; background: ${color};" class="progress"></div>` : ""}
         </div>
     `);
 
@@ -132,6 +134,21 @@ function hideToast(id) {
                 margin-top: -100px;
                 box-shadow: 0 10px 40px 0 rgba(62,57,107,.07), 0 2px 9px 0 rgba(62,57,107,.12);
                 max-width: 50%;
+            }
+            
+            @keyframes progress {
+                from { width: 100% }
+                to { width: 0% }
+            }
+            
+            .toast > .progress {
+                position: absolute;
+                height: 2px;
+                width: 100%;
+                margin-left: -15px;
+                bottom: 0;
+                opacity: 0.75;
+                animation: progress linear;
             }
             
             .toast > .close {
