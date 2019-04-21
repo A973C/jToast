@@ -26,6 +26,7 @@ Just add the following tag to the end of your page
 * Color
 * Border radius
 * Close icon
+* Progress bar
 <br>
 
 ## Usage & default values
@@ -35,7 +36,8 @@ showToast(text, {
   background: '#232323',
   color: '#fff',
   borderRadius: '0px',
-  close: false
+  close: false,
+  progressBar: false
 });
 ```
 
@@ -49,7 +51,7 @@ hideToast(toastID); // toastID gets returned from the showToast function
 showToast('Thanks for signing up!', {
   duration: 5000,
   background: '#20b2aa',
-  borderRadius: '15px',
+  borderRadius: '25px',
   close: true
 });
 
