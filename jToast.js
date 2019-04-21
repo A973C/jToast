@@ -5,11 +5,11 @@ let manager = {
     currentWorkingID: 0,
     addJob(job) {
         this.ready = false;
-        this.jobs.push({ text: job.text, args: job.args });
+        job.type === "show" ? this.jobs.push({ text: job.text, args: job.args, type: "show" }) : this.jobs.push({ id: job.id, type: "hide" });
 
         const waitUntilReady = setInterval(() => {
-            if (this.workJobOff()) {
-                clearInterval(waitUntilReady);
+            if (this.workJobOff() && this.jobs.length === 0) {
+                // clearInterval(waitUntilReady);
             }
         }, 250);
     },
@@ -20,7 +20,8 @@ let manager = {
     },
     workJobOff() {
         if (this.ready && this.jobs.length > 0) {
-            showToast(this.jobs[0].text, this.jobs[0].args);
+            console.log(this.jobs[0].type);
+            this.jobs[0].type === "show" ? showToast(this.jobs[0].text, this.jobs[0].args) : hideToast(this.jobs[0].id);
             this.jobs.splice(0, 1);
             return true;
         }
@@ -30,12 +31,12 @@ let manager = {
 function showToast(text, { duration = 3000, background = "#232323", color = "#fff", borderRadius = "0px", close = false } = {}) {
     const selectedToast = toasts;
     if (!manager.ready) {
-        manager.addJob({ text: text, args: showToast.arguments[1], workingID: selectedToast });
+        manager.addJob({ text: text, args: showToast.arguments[1], workingID: selectedToast, type: "show" });
         return;
     }
     manager.currentWorkingID = selectedToast;
 
-    $("body").append(`
+    $("#toasts").append(`
         <div style="background: ${background}; color: ${color}; border-radius: ${borderRadius}; ${close ? 'display: flex;' : ''}" data-toast-id="${toasts}" class="toast">
             <span>${text}</span>
         </div>
@@ -70,16 +71,34 @@ function showToast(text, { duration = 3000, background = "#232323", color = "#ff
     });
 
     setTimeout(() => {
+        if (!manager.ready) {
+            manager.addJob({ id: selectedToast, type: "hide" });
+            console.log("Added hide job");
+            return;
+        }
+        manager.currentWorkingID = selectedToast;
+
+        manager.ready = false;
         $(`[data-toast-id="${selectedToast}"]`).animate({
             "margin-right": "-" + parseInt($(`[data-toast-id="${selectedToast}"]`).width() + (15 * 2) + 25) + "px"
+        }, 300);
+
+        setTimeout(() => {
+            manager.removeJob(selectedToast);
         }, 300);
 
         if (selectedToast !== toasts) {
             $(".toast").map((i) => {
                 if (i < selectedToast) {
+                    manager.ready = false;
+                    manager.currentWorkingID = selectedToast;
                     setTimeout(() => {
                         $(".toast").eq(i).animate({
                             "margin-top": "-=" + parseInt($(`[data-toast-id="${selectedToast}"]`).height() + (15 * 2) + 15 + 5) + "px"
+                        }, 300);
+
+                        setTimeout(() => {
+                            manager.removeJob(selectedToast);
                         }, 300);
                     }, 300);
                 }
@@ -97,16 +116,29 @@ function showToast(text, { duration = 3000, background = "#232323", color = "#ff
 
 function hideToast(id) {
     if ($(`[data-toast-id="${id}"]`).css("display") !== "none") {
+        manager.ready = false;
+        manager.currentWorkingID = id;
+
         $(`[data-toast-id="${id}"]`).animate({
             "margin-right": "-" + parseInt($(`[data-toast-id="${id}"]`).width() + (15 * 2) + 25) + "px"
+        }, 300);
+
+        setTimeout(() => {
+            manager.removeJob(id);
         }, 300);
 
         if (id !== toasts) {
             $(".toast").map((i) => {
                 if (i < id) {
+                    manager.ready = false;
+                    manager.currentWorkingID = id;
                     setTimeout(() => {
                         $(".toast").eq(i).animate({
                             "margin-top": "-=" + parseInt($(`[data-toast-id="${id}"]`).height() + (15 * 2) + 15 + 5) + "px"
+                        }, 300);
+
+                        setTimeout(() => {
+                            manager.removeJob(id);
                         }, 300);
                     }, 300);
                 }
@@ -143,4 +175,6 @@ function hideToast(id) {
             }
         </style>
     `);
+
+    $("body").append(`<div id="toasts"></div>`);
 })();
