@@ -71,34 +71,16 @@ function showToast(text, { duration = 3000, background = "#232323", color = "#ff
     });
 
     setTimeout(() => {
-        if (!manager.ready) {
-            manager.addJob({ id: selectedToast, type: "hide" });
-            console.log("Added hide job");
-            return;
-        }
-        manager.currentWorkingID = selectedToast;
-
-        manager.ready = false;
         $(`[data-toast-id="${selectedToast}"]`).animate({
-            "margin-right": "-" + parseInt($(`[data-toast-id="${selectedToast}"]`).width() + (15 * 2) + 25) + "px"
-        }, 300);
-
-        setTimeout(() => {
-            manager.removeJob(selectedToast);
+            "margin-right": "-" + parseInt($(`[data-toast-id="${selectedToast}"]`).width() + (15 * 2) + 25 + 100) + "px"
         }, 300);
 
         if (selectedToast !== toasts) {
             $(".toast").map((i) => {
                 if (i < selectedToast) {
-                    manager.ready = false;
-                    manager.currentWorkingID = selectedToast;
                     setTimeout(() => {
                         $(".toast").eq(i).animate({
                             "margin-top": "-=" + parseInt($(`[data-toast-id="${selectedToast}"]`).height() + (15 * 2) + 15 + 5) + "px"
-                        }, 300);
-
-                        setTimeout(() => {
-                            manager.removeJob(selectedToast);
                         }, 300);
                     }, 300);
                 }
@@ -106,7 +88,7 @@ function showToast(text, { duration = 3000, background = "#232323", color = "#ff
         }
 
         setTimeout(() => {
-            $(`[data-toast-id="${selectedToast}"]`).css("display", "none");
+            $(`[data-toast-id="${selectedToast}"]`).addClass("hidden");
         }, 300);
     }, duration);
 
@@ -115,30 +97,17 @@ function showToast(text, { duration = 3000, background = "#232323", color = "#ff
 }
 
 function hideToast(id) {
-    if ($(`[data-toast-id="${id}"]`).css("display") !== "none") {
-        manager.ready = false;
-        manager.currentWorkingID = id;
-
+    if (parseInt($(`[data-toast-id="${id}"]`).css("margin-right").replace("px", "")) === 0) {
         $(`[data-toast-id="${id}"]`).animate({
-            "margin-right": "-" + parseInt($(`[data-toast-id="${id}"]`).width() + (15 * 2) + 25) + "px"
-        }, 300);
-
-        setTimeout(() => {
-            manager.removeJob(id);
+            "margin-right": "-" + parseInt($(`[data-toast-id="${id}"]`).width() + (15 * 2) + 25 + 100) + "px"
         }, 300);
 
         if (id !== toasts) {
             $(".toast").map((i) => {
                 if (i < id) {
-                    manager.ready = false;
-                    manager.currentWorkingID = id;
                     setTimeout(() => {
                         $(".toast").eq(i).animate({
                             "margin-top": "-=" + parseInt($(`[data-toast-id="${id}"]`).height() + (15 * 2) + 15 + 5) + "px"
-                        }, 300);
-
-                        setTimeout(() => {
-                            manager.removeJob(id);
                         }, 300);
                     }, 300);
                 }
@@ -146,7 +115,7 @@ function hideToast(id) {
         }
 
         setTimeout(() => {
-            $(`[data-toast-id="${id}"]`).css("display", "none");
+            $(`[data-toast-id="${id}"]`).addClass("hidden");
         }, 300);
     }
 }
