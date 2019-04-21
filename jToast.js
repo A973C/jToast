@@ -8,8 +8,8 @@ let manager = {
         job.type === "show" ? this.jobs.push({ text: job.text, args: job.args, type: "show" }) : this.jobs.push({ id: job.id, type: "hide" });
 
         const waitUntilReady = setInterval(() => {
-            if (this.workJobOff() && this.jobs.length === 0) {
-                // clearInterval(waitUntilReady);
+            if (this.workJobOff()) {
+                clearInterval(waitUntilReady);
             }
         }, 250);
     },
