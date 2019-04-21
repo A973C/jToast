@@ -5,11 +5,11 @@ let manager = {
     currentWorkingID: 0,
     addJob(job) {
         this.ready = false;
-        this.jobs.push({ text: job.text, args: job.args });
+        job.type === "show" ? this.jobs.push({ text: job.text, args: job.args, type: "show" }) : this.jobs.push({ id: job.id, type: "hide" });
 
         const waitUntilReady = setInterval(() => {
-            if (this.workJobOff()) {
-                clearInterval(waitUntilReady);
+            if (this.workJobOff() && this.jobs.length === 0) {
+                // clearInterval(waitUntilReady);
             }
         }, 250);
     },
@@ -20,26 +20,32 @@ let manager = {
     },
     workJobOff() {
         if (this.ready && this.jobs.length > 0) {
-            showToast(this.jobs[0].text, this.jobs[0].args);
+            console.log(this.jobs[0].type);
+            this.jobs[0].type === "show" ? showToast(this.jobs[0].text, this.jobs[0].args) : hideToast(this.jobs[0].id);
             this.jobs.splice(0, 1);
             return true;
         }
     }
 };
 
-function showToast(text, { duration = 3000, background = "#232323", color = "#fff", borderRadius = "0px" } = {}) {
+function showToast(text, { duration = 3000, background = "#232323", color = "#fff", borderRadius = "0px", close = false } = {}) {
     const selectedToast = toasts;
     if (!manager.ready) {
-        manager.addJob({ text: text, args: showToast.arguments[1], workingID: selectedToast });
+        manager.addJob({ text: text, args: showToast.arguments[1], workingID: selectedToast, type: "show" });
         return;
     }
     manager.currentWorkingID = selectedToast;
 
-    $("body").append(`
-        <div style="background: ${background}; color: ${color}; border-radius: ${borderRadius};" data-toast-id="${toasts}" class="toast">
-            ${text}
+    $("#toasts").append(`
+        <div style="background: ${background}; color: ${color}; border-radius: ${borderRadius}; ${close ? 'display: flex;' : ''}" data-toast-id="${toasts}" class="toast">
+            <span>${text}</span>
         </div>
     `);
+
+    if (close)
+        $(`[data-toast-id="${selectedToast}"]`).append(`
+            <div style="height: ${$(`[data-toast-id="${selectedToast}"] > span`).height()}px" onclick="hideToast(${selectedToast})" class="close">&times;</div>
+        `);
 
     $(".toast").map((i) => {
         manager.ready = false;
@@ -66,7 +72,7 @@ function showToast(text, { duration = 3000, background = "#232323", color = "#ff
 
     setTimeout(() => {
         $(`[data-toast-id="${selectedToast}"]`).animate({
-            "margin-right": "-" + parseInt($(`[data-toast-id="${selectedToast}"]`).width() + (15 * 2) + 25) + "px"
+            "margin-right": "-" + parseInt($(`[data-toast-id="${selectedToast}"]`).width() + (15 * 2) + 25 + 100) + "px"
         }, 300);
 
         if (selectedToast !== toasts) {
@@ -82,7 +88,7 @@ function showToast(text, { duration = 3000, background = "#232323", color = "#ff
         }
 
         setTimeout(() => {
-            $(`[data-toast-id="${selectedToast}"]`).css("display", "none");
+            $(`[data-toast-id="${selectedToast}"]`).addClass("hidden");
         }, 300);
     }, duration);
 
@@ -91,9 +97,9 @@ function showToast(text, { duration = 3000, background = "#232323", color = "#ff
 }
 
 function hideToast(id) {
-    if ($(`[data-toast-id="${id}"]`).css("display") !== "none") {
+    if (parseInt($(`[data-toast-id="${id}"]`).css("margin-right").replace("px", "")) === 0) {
         $(`[data-toast-id="${id}"]`).animate({
-            "margin-right": "-" + parseInt($(`[data-toast-id="${id}"]`).width() + (15 * 2) + 25) + "px"
+            "margin-right": "-" + parseInt($(`[data-toast-id="${id}"]`).width() + (15 * 2) + 25 + 100) + "px"
         }, 300);
 
         if (id !== toasts) {
@@ -109,7 +115,7 @@ function hideToast(id) {
         }
 
         setTimeout(() => {
-            $(`[data-toast-id="${id}"]`).css("display", "none");
+            $(`[data-toast-id="${id}"]`).addClass("hidden");
         }, 300);
     }
 }
@@ -127,6 +133,17 @@ function hideToast(id) {
                 box-shadow: 0 10px 40px 0 rgba(62,57,107,.07), 0 2px 9px 0 rgba(62,57,107,.12);
                 max-width: 50%;
             }
+            
+            .toast > .close {
+                margin-left: 15px;
+                opacity: 0.75;
+                font-size: 24px;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+            }
         </style>
     `);
+
+    $("body").append(`<div id="toasts"></div>`);
 })();
