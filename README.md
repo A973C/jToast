@@ -24,6 +24,7 @@ Just add the following tag to the end of your page
 * Background
 * Color
 * Border radius
+* Close icon
 <br>
 
 ## Usage & default values
@@ -32,7 +33,8 @@ showToast(text, {
   duration: 3000,
   background: '#232323',
   color: '#fff',
-  borderRadius: '0px'
+  borderRadius: '0px',
+  close: false
 });
 ```
 
@@ -46,6 +48,7 @@ hideToast(toastID); // toastID gets returned from the showToast function
 showToast('Thanks for signing up!', {
   duration: 5000,
   background: '#20b2aa',
-  borderRadius: '15px'
+  borderRadius: '15px',
+  close: true
 });
 
