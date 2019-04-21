@@ -20,7 +20,6 @@ let manager = {
     },
     workJobOff() {
         if (this.ready && this.jobs.length > 0) {
-            console.log(this.jobs[0].type);
             this.jobs[0].type === "show" ? showToast(this.jobs[0].text, this.jobs[0].args) : hideToast(this.jobs[0].id);
             this.jobs.splice(0, 1);
             return true;
