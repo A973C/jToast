@@ -9,6 +9,15 @@ A modern & easy-going jQuery Plugin to create Toasts.<br><br>
 [Click](https://l2g.cc/projects/jToast/)
 <br><br>
 
+## Let's go!
+Just add the following tag to the end of your page
+```html
+<script src="https://cdn.jsdelivr.net/gh/l2ig/jToast/jToast.min.js">
+```
+> Delivered by [jsdeliver](https://www.jsdelivr.com/).
+
+<br>
+
 ## Customization options
 * Text
 * Duration
