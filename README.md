@@ -10,7 +10,7 @@ A modern & easy-going jQuery Plugin to create Toasts.<br><br>
 ## Let's go!
 Just add the following tag to the end of your page
 ```html
-<script src="https://cdn.jsdelivr.net/gh/l2ig/jToast/jToast.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/l2ig/jToast@master/jToast.min.js"></script>
 ```
 > Delivered by [jsdeliver](https://www.jsdelivr.com/).
 
